@@ -1,0 +1,73 @@
+@model PetMarket.Models.Pet
+@{
+    ViewData["Title"] = "Edit Pet";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-md-8 col-lg-6">
+            <div class="card shadow-sm border-0">
+                <div class="card-header bg-warning text-dark py-3">
+                    <h4 class="mb-0">
+                        <i class="bi bi-pencil-square me-2"></i>Edit Pet
+                    </h4>
+                </div>
+                <div class="card-body p-4">
+                    
+                    <form asp-action="EditPet" asp-controller="Pet" asp-route-id="@Model.IdPet" method="post" enctype="multipart/form-data">
+
+                        <input type="hidden" asp-for="IdPet" />
+                        <input type="hidden" asp-for="ImagePetUrl" /> 
+
+                        <div class="mb-3">
+                            <label asp-for="TypePet" class="form-label fw-bold">
+                                <i class="bi bi-tag-fill me-2 text-primary"></i>Pet Type
+                            </label>
+                            <input asp-for="TypePet" class="form-control" placeholder="ex: Dog, Cat, Bird..." required />
+                            <span asp-validation-for="TypePet" class="text-danger"></span>
+                            <div class="form-text">
+                                <i class="bi bi-info-circle me-1"></i>Enter the type of pet (e.g., Dog, Cat, Bird, etc.)
+                            </div>
+                        </div>
+
+                        
+                        <div class="mb-3">
+                            <label asp-for="ImagePet" class="form-label fw-bold">
+                                <i class="bi bi-image-fill me-2 text-primary"></i>Pet Image
+                            </label>
+
+                            @if (!string.IsNullOrEmpty(Model.ImagePetUrl))
+                            {
+                                <div class="mb-2">
+                                    <span class="d-block text-muted small">Current Image:</span>
+                                    <img src="@Model.ImagePetUrl" alt="Current Pet Image" class="img-thumbnail" style="max-width: 150px; max-height: 150px; object-fit: cover;" />
+                                </div>
+                            }
+
+                            <input asp-for="ImagePet" type="file" class="form-control" />
+                            <span asp-validation-for="ImagePet" class="text-danger"></span>
+                            <div class="form-text">
+                                <i class="bi bi-info-circle me-1"></i>Upload a new image to replace the current one (optional).
+                            </div>
+                        </div>
+                      
+
+                        <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-4">
+                            <a href="/admin/pets" class="btn btn-outline-secondary">
+                                <i class="bi bi-x-circle me-2"></i>Cancel
+                            </a>
+                            <button type="submit" class="btn btn-warning text-dark">
+                                <i class="bi bi-check-circle me-2"></i>Update Pet
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

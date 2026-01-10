@@ -1,0 +1,97 @@
+﻿@model IEnumerable<PetMarket.Models.Favorites>
+
+<div class="container my-5">
+    <div class="d-flex align-items-center mb-5">
+        <div class="bg-danger bg-opacity-10 p-3 rounded-circle me-3">
+            <i class="bi bi-heart-fill text-danger fs-3"></i>
+        </div>
+        <div>
+            <h2 class="fw-bold mb-0">My Wishlist</h2>
+            <p class="text-muted mb-0">Products you've saved for later</p>
+        </div>
+    </div>
+
+    @if (!Model.Any())
+    {
+        <div class="text-center py-5 border rounded-4 bg-light shadow-sm">
+            <i class="bi bi-bookmark-heart display-1 text-muted opacity-25"></i>
+            <h4 class="mt-3 text-secondary">Your wishlist is empty</h4>
+            <p class="text-muted">Explore our shop and add some items you love!</p>
+            <a href="/products" class="btn btn-primary rounded-pill px-4 mt-2">Go Shopping</a>
+        </div>
+    }
+    else
+    {
+        <div class="row g-4">
+            @foreach (var fav in Model)
+            {
+                <div class="col-md-4 col-lg-3" id="favorite-item-@fav.IdProduct">
+                    <div class="card h-100 shadow-sm border-0 rounded-4 overflow-hidden product-card-hover">
+                        <div class="position-absolute top-0 end-0 p-3">
+                            <button class="btn btn-white btn-sm rounded-circle shadow-sm border"
+                                    onclick="toggleFavorite(@fav.IdProduct, this)"
+                                    title="Remove from favorites">
+                                <i class="bi bi-heart-fill text-danger"></i>
+                            </button>
+                        </div>
+
+                        <div class="text-center p-3 bg-light">
+                            <img src="@fav.Product.ImageProductUrl"
+                                 class="img-fluid"
+                                 alt="@fav.Product.NameProduct"
+                                 style="height: 180px; object-fit: contain;">
+                        </div>
+
+                        <div class="card-body d-flex flex-column p-4">
+                            <h6 class="card-title fw-bold text-dark mb-2">@fav.Product.NameProduct</h6>
+
+                            <div class="d-flex align-items-center mb-3">
+                                <span class="badge bg-primary-subtle text-primary fw-bold fs-6 rounded-pill px-3">
+                                    @fav.Product.PriceProduct.ToString("N2") RON
+                                </span>
+                            </div>
+
+                            <div class="mt-auto pt-3 border-top">
+                                <div class="d-grid gap-2">
+                                    <a href="/products/details?id=@fav.IdProduct" class="btn btn-outline-dark rounded-pill btn-sm">
+                                        <i class="bi bi-eye me-2"></i>View Details
+                                    </a>
+                                    <form asp-controller="ShoppingCart" asp-action="AddToCart" method="post">
+                                        <input type="hidden" name="productId" value="@fav.IdProduct" />
+                                        <input type="hidden" name="quantity" value="1" />
+                                        <button type="submit" class="btn btn-success w-100 rounded-pill btn-sm shadow-sm">
+                                            <i class="bi bi-cart-plus me-2"></i>Add to Cart
+                                        </button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+</div>
+
+@section Scripts {
+    <style>
+        
+        .product-card-hover {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+            .product-card-hover:hover {
+                transform: translateY(-8px);
+                box-shadow: 0 1rem 3rem rgba(0,0,0,.1) !important;
+            }
+
+        .btn-white {
+            background-color: white;
+            color: #212529;
+        }
+
+            .btn-white:hover {
+                background-color: #f8f9fa;
+            }
+    </style>
+}

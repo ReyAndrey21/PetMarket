@@ -1,0 +1,66 @@
+﻿@using Microsoft.AspNetCore.Identity
+@inject SignInManager<PetMarket.Models.User> SignInManager
+@inject UserManager<PetMarket.Models.User> UserManager
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Admin Dashboard</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet" />
+	<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+
+	<link href="~/css/panel_admin.css" rel="stylesheet" />
+</head>
+<body>
+    <div class="sidebar">
+        <div class="p-3 text-center border-bottom">
+            <h4>Admin Panel</h4>
+        </div>
+        <nav class="nav flex-column mt-3">
+            <a href="/admin" class="@(ViewData["Title"]?.ToString() == "Dashboard" ? "active" : "")">
+                <i class="bi bi-speedometer2"></i> Dashboard
+            </a>
+            <a href="/admin/users" class="@(ViewData["Title"]?.ToString() == "Manage Users" ? "active" : "")">
+                <i class="bi bi-people"></i> Users
+            </a>
+            <a href="/admin/products" class="@(ViewData["Title"]?.ToString() == "Manage Products" ? "active" : "")">
+                <i class="bi bi-box-seam"></i> Products
+            </a>
+            <a href="/admin/orders" class="@(ViewData["Title"]?.ToString() == "Manage Orders" ? "active" : "")">
+                <i class="bi bi-receipt"></i> Orders
+            </a>
+            <a href="/admin/pets" class="@(ViewData["Title"]?.ToString() == "Manage Pets" ? "active" : "")">
+                <i class="fas fa-paw"></i> Pets
+            </a>
+            <a href="/admin/categories" class="@(ViewData["Title"]?.ToString() == "Manage Categories" ? "active" : "")">
+				<i class="bi bi-tags"></i> Categories
+            </a>
+        </nav>
+    </div>
+
+    <div class="content">
+        <nav class="navbar navbar-expand navbar-custom mb-4 shadow-sm">
+            <div class="container-fluid d-flex justify-content-between align-items-center">
+                <div class="d-flex align-items-center">
+                    <i class="fas fa-hand-peace text-warning fs-4 me-2"></i>
+					<span class="welcome-text"> <strong>Welcome @User.Identity?.Name</strong>!</span>
+                </div>
+                <form asp-controller="Account" asp-action="Logout" method="post" class="mb-0">
+                    <button type="submit" class="btn btn-danger btn-sm px-3">
+                        <i class="bi bi-box-arrow-right"></i> Logout
+                    </button>
+                </form>
+            </div>
+        </nav>
+        <main>
+            @RenderBody()
+        </main>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    @RenderSection("Scripts", required: false)
+</body>
+</html>

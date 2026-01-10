@@ -1,0 +1,65 @@
+@model PetMarket.Models.Category
+@{
+	ViewData["Title"] = "Delete Category";
+	Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="container mt-4">
+	<div class="row justify-content-center">
+		<div class="col-md-8 col-lg-6">
+			<div class="card shadow-sm border-0">
+				<div class="card-header bg-danger text-white py-3">
+					<h4 class="mb-0">
+						<i class="bi bi-exclamation-triangle-fill me-2"></i>Delete Category
+					</h4>
+				</div>
+				<div class="card-body p-4">
+					<div class="alert alert-warning border-warning">
+						<i class="bi bi-exclamation-circle-fill me-2"></i>
+						<strong>Are you sure you want to delete this category?</strong>
+						<p class="mb-0 mt-2">This action cannot be undone.</p>
+					</div>
+
+					<div class="card bg-light mb-4">
+						<div class="card-body">
+							<dl class="row mb-0">
+								<dt class="col-sm-4">
+									<i class="bi bi-hash me-2 text-muted"></i>ID:
+								</dt>
+								<dd class="col-sm-8 fw-bold">#@Model.IdCategory</dd>
+
+								<dt class="col-sm-4">
+									<i class="bi bi-tag-fill me-2 text-muted"></i>Name:
+								</dt>
+								<dd class="col-sm-8">
+									<span class="badge bg-success">
+										<i class="bi bi-tag me-1"></i>@Model.NameCategory
+									</span>
+								</dd>
+
+								<dt class="col-sm-4">
+									<i class="bi bi-file-text me-2 text-muted"></i>Description:
+								</dt>
+								<dd class="col-sm-8 text-muted">@Model.DescriptionCategory</dd>
+
+								
+							</dl>
+						</div>
+					</div>
+
+					<form action="/admin/categories/delete/@Model.IdCategory" method="post">
+						<input type="hidden" asp-for="IdCategory" />
+						<div class="d-grid gap-2 d-md-flex justify-content-md-end">
+							<a href="/admin/categories" class="btn btn-outline-secondary">
+								<i class="bi bi-x-circle me-2"></i>Cancel
+							</a>
+							<button type="submit" class="btn btn-danger">
+								<i class="bi bi-trash me-2"></i>Delete Category
+							</button>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

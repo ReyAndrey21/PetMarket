@@ -1,0 +1,112 @@
+﻿@model IEnumerable<PetMarket.Models.Category>
+@{
+    ViewData["Title"] = ViewData["Title"] ?? "Explore Categories";
+    Layout = "~/Views/Shared/_CustomerLayout.cshtml";
+}
+
+<div class="container my-5">
+    <div class="text-center mb-5 pb-3">
+        <h2 class="display-5 fw-bold text-dark mb-2">
+            <span class="text-success">Pet</span>Market Collections
+        </h2>
+        <p class="text-muted fs-5">Everything your companion needs, organized by category</p>
+        <div class="mx-auto bg-success rounded-pill" style="height: 4px; width: 60px;"></div>
+    </div>
+
+    @if (Model != null && Model.Any())
+    {
+        <div class="row g-4">
+            @foreach (var category in Model)
+            {
+                var subcategoriesExist = category.Subcategories != null && category.Subcategories.Any();
+
+                <div class="col-md-4 col-lg-3">
+                    <div class="card h-100 border-0 shadow-sm rounded-4 category-card transition-all">
+                        <div class="card-header border-0 bg-opacity-10 py-4 text-center @(subcategoriesExist ? "bg-info" : "bg-success")">
+                            <div class="bg-white d-inline-flex align-items-center justify-content-center rounded-circle shadow-sm" style="width: 70px; height: 70px;">
+                                <i class="bi @(subcategoriesExist ? "bi-grid-3x3-gap text-info" : "bi-tag text-success") fs-2"></i>
+                            </div>
+                        </div>
+
+                        <div class="card-body d-flex flex-column p-4">
+                            <h5 class="card-title fw-bold text-dark text-center mb-3">@category.NameCategory</h5>
+
+                            <p class="card-text text-muted text-center mb-4 small">
+                                @((category.DescriptionCategory?.Length > 80 ? category.DescriptionCategory.Substring(0, 80) + "..." : category.DescriptionCategory) ?? "Discover our selection of quality products for your pet.")
+                            </p>
+
+                            <div class="mt-auto pt-3 border-top border-light">
+                                @if (subcategoriesExist)
+                                {
+                                    <a asp-controller="CustomerDashboard"
+                                       asp-action="Categories"
+                                       asp-route-id="@category.IdCategory"
+                                       class="btn btn-info w-100 rounded-pill text-white shadow-sm hover-lift">
+                                        <i class="bi bi-list-nested me-2"></i>@category.Subcategories.Count() Subcategories
+                                    </a>
+                                }
+                                else
+                                {
+                                    <a asp-controller="CustomerDashboard"
+                                       asp-action="Products"
+                                       asp-route-id="@category.IdCategory"
+                                       class="btn btn-outline-success w-100 rounded-pill shadow-sm hover-lift">
+                                        View Products <i class="bi bi-arrow-right ms-2"></i>
+                                    </a>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+    else
+    {
+        <div class="text-center py-5 border rounded-4 bg-light shadow-inner">
+            <i class="bi bi-search display-1 text-muted opacity-50"></i>
+            <h3 class="mt-3 text-dark fw-bold">No results found</h3>
+            <p class="text-muted">We couldn't find any categories in this section at the moment.</p>
+            <a href="/" class="btn btn-success rounded-pill px-4 mt-2">Back to Home</a>
+        </div>
+    }
+</div>
+
+@section Scripts {
+    <style>
+        /* Efecte de tranzitie si hover */
+        .category-card {
+            transition: all 0.3s cubic-bezier(.25,.8,.25,1);
+        }
+
+            .category-card:hover {
+                transform: translateY(-10px);
+                box-shadow: 0 1rem 3rem rgba(0,0,0,.1) !important;
+            }
+
+        .hover-lift {
+            transition: transform 0.2s;
+        }
+
+            .hover-lift:hover {
+                transform: scale(1.03);
+            }
+
+        .bg-info.bg-opacity-10 {
+            background-color: rgba(13, 202, 240, 0.1);
+        }
+
+        .bg-success.bg-opacity-10 {
+            background-color: rgba(25, 135, 84, 0.1);
+        }
+
+        .text-success {
+            color: #198754 !important;
+        }
+
+        .btn-info {
+            background-color: #0dcaf0;
+            border-color: #0dcaf0;
+        }
+    </style>
+}

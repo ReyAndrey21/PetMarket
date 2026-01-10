@@ -9,8 +9,9 @@ namespace PetMarket.Models
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int IdPet { get; set; }
         public required string TypePet { get; set; }
-        public ICollection<Category>? Category { get; set; }
-
+        public string? ImagePetUrl { get; set; }
+        [NotMapped]
+        public IFormFile? ImagePet { get; set; }
 
     }
 }

@@ -1,0 +1,86 @@
+﻿@model IEnumerable<PetMarket.Models.Pet>
+
+@{
+    ViewData["Title"] = "Magazin Online";
+    Layout = "~/Views/Shared/_CustomerLayout.cshtml";
+}
+
+<div class="container mt-5">
+
+    <div class="bg-light p-5 rounded-4 text-center shadow-sm mb-5">
+        <h1 class="display-5 fw-bold text-primary mb-3">
+            Welcome to PetMarket!
+        </h1>
+        <p class="lead text-muted mb-4">
+            All your pet needs: food, accessories, toys and love.
+        </p>
+        <a href="/products" class="btn btn-lg btn-success px-4 shadow-sm">
+            <i class="bi bi-shop-window me-2"></i>View our products
+        </a>
+    </div>
+
+    <div class="mt-5 mb-5">
+        <h2 class="text-center mb-4 text-primary fw-semibold">
+            <i class="bi bi-paw-fill me-2"></i>Discover Pet Types
+        </h2>
+
+        <div class="d-flex flex-row overflow-auto py-3" style="gap: 20px; scrollbar-width: none;">
+
+            @if (Model != null && Model.Any())
+            {
+                @foreach (var pet in Model)
+                {
+                    <div class="card text-center flex-shrink-0 shadow-sm border-0" style="width: 180px;">
+                        <div class="card-body">
+
+                            @if (!string.IsNullOrEmpty(pet.ImagePetUrl))
+                            {
+                                <img src="@pet.ImagePetUrl" alt="@pet.TypePet" class="rounded-circle mb-3" style="width: 90px; height: 90px; object-fit: cover; border: 3px solid #007bff;">
+                            }
+                            else
+                            {
+                                <i class="bi bi-question-square-fill text-muted mb-3" style="font-size: 60px;"></i>
+                            }
+
+                            <h5 class="card-title fw-bold text-dark mb-2">
+                                @pet.TypePet
+                            </h5>
+                        </div>
+                    </div>
+                }
+            }
+            else
+            {
+                <div class="alert alert-info flex-grow-1 text-center" style="min-width: 100%;" role="alert">
+                    <i class="bi bi-info-circle-fill me-2"></i> No pet types are currently available.
+                </div>
+            }
+        </div>
+
+    </div>
+
+    <div class="bg-white rounded-4 shadow-sm p-5 mb-5">
+        <h2 class="text-center mb-4 text-primary fw-semibold">
+            <i class="bi bi-stars me-2"></i>Why choose PetMarket?
+        </h2>
+
+        <div class="row text-center">
+            <div class="col-md-4 mb-3">
+                <i class="bi bi-truck fs-1 text-success mb-3"></i>
+                <h5>Fast delivery</h5>
+                <p class="text-muted small">Orders arrive within 24–48 hours.</p>
+            </div>
+            <div class="col-md-4 mb-3">
+                <i class="bi bi-shield-check fs-1 text-primary mb-3"></i>
+                <h5>Verified products</h5>
+                <p class="text-muted small">We select only the highest quality products.</p>
+            </div>
+            <div class="col-md-4 mb-3">
+                <i class="bi bi-emoji-heart-eyes fs-1 text-danger mb-3"></i>
+                <h5>Happy customers</h5>
+                <p class="text-muted small">Thousands of satisfied pets and owners every month!</p>
+            </div>
+        </div>
+    </div>
+
+</div>

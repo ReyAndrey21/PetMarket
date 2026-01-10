@@ -1,0 +1,45 @@
+﻿@model PetMarket.Models.Order
+
+<div class="container my-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6 text-center">
+            <div class="card shadow-lg border-0 rounded-4 p-5">
+                <div class="mb-4">
+                    <div class="display-1 text-success animate__animated animate__heartBeat animate__infinite">
+                        <i class="bi bi-check-circle-fill"></i>
+                    </div>
+                </div>
+
+                <h2 class="fw-bold text-dark mb-3">Order Placed Successfully!</h2>
+
+                <p class="text-muted fs-5 mb-4">
+                    Thank you for your purchase! Your furry friend is going to be so happy. 🐾
+                </p>
+
+                <div class="bg-light rounded-3 p-4 mb-4 border">
+                    <div class="d-flex justify-content-between mb-2">
+                        <span class="text-secondary">Order Number:</span>
+                        <span class="fw-bold text-dark">#@Model.IdOrder</span>
+                    </div>
+                    <div class="d-flex justify-content-between">
+                        <span class="text-secondary">Total Amount Paid:</span>
+                        <span class="fw-bold text-success fs-5">@Model.TotalAmount.ToString("N2") RON</span>
+                    </div>
+                </div>
+
+                <div class="d-grid gap-3">
+                    <a asp-controller="CustomerDashboard" asp-action="HomePage" class="btn btn-success btn-lg rounded-pill fw-bold py-3 shadow-sm">
+                        <i class="bi bi-house-door me-2"></i>Back to Store
+                    </a>
+                    <a asp-controller="Account" asp-action="Profile" class="btn btn-outline-secondary btn-sm border-0">
+                        View Order History
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+}

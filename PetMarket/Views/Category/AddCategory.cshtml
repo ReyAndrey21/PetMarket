@@ -1,0 +1,70 @@
+﻿@model PetMarket.Models.Category
+@{
+	ViewData["Title"] = "Add Category";
+	Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="container mt-4">
+	<div class="row justify-content-center">
+		<div class="col-md-8 col-lg-6">
+			<div class="card shadow-sm border-0">
+				<div class="card-header bg-success text-white py-3">
+					<h4 class="mb-0">
+						<i class="bi bi-plus-circle-fill me-2"></i>Add New Category
+					</h4>
+				</div>
+				<div class="card-body p-4">
+					<form action="/admin/categories/create" method="post">
+
+						<div class="mb-3">
+							<label asp-for="NameCategory" class="form-label fw-bold">
+								<i class="bi bi-tag-fill me-2 text-success"></i>Category Name
+							</label>
+							<input asp-for="NameCategory" class="form-control" placeholder="Enter category name" required />
+							<span asp-validation-for="NameCategory" class="text-danger"></span>
+						</div>
+
+						<div class="mb-3">
+							<label asp-for="DescriptionCategory" class="form-label fw-bold">
+								<i class="bi bi-file-text me-2 text-success"></i>Description
+							</label>
+							<textarea asp-for="DescriptionCategory" class="form-control" rows="3"
+									  placeholder="Enter category description" required></textarea>
+							<span asp-validation-for="DescriptionCategory" class="text-danger"></span>
+						</div>
+
+						<div class="mb-3">
+							<label asp-for="ParentCategoryId" class="form-label fw-bold">
+								<i class="bi bi-diagram-3-fill me-2 text-success"></i>Parent Category (optional)
+							</label>
+							<select asp-for="ParentCategoryId"
+									asp-items="@(new SelectList(ViewBag.Categories, "IdCategory", "NameCategory", ViewBag.ParentCategoryId))" class="form-select">
+								<option value="">-- No Parent (Main Category) --</option>
+							</select>
+							<span asp-validation-for="ParentCategoryId" class="text-danger"></span>
+
+							<div class="form-text">
+								<i class="bi bi-info-circle me-1"></i>
+								Select a parent category only if this is a subcategory.
+							</div>
+						</div>
+
+						<div class="d-grid gap-2 d-md-flex justify-content-md-end mt-4">
+							<a href="/admin/categories" class="btn btn-outline-secondary">
+								<i class="bi bi-x-circle me-2"></i>Cancel
+							</a>
+							<button type="submit" class="btn btn-success">
+								<i class="bi bi-check-circle me-2"></i>Save Category
+							</button>
+						</div>
+
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+@section Scripts {
+	<partial name="_ValidationScriptsPartial" />
+}

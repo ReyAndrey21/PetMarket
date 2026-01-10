@@ -1,0 +1,106 @@
+﻿@model PetMarket.Models.ShoppingCart
+
+<div class="container my-5">
+    <h2 class="mb-4">Checkout</h2>
+
+    <form asp-action="PlaceOrder" method="post">
+        <div class="row">
+            <div class="col-md-8">
+                <div class="card p-4 shadow-sm">
+                    <h4>Shipping Address</h4>
+                    <div class="row g-3 mb-4">
+                        <div class="col-md-8"><input name="Street" class="form-control" placeholder="Street" required /></div>
+                        <div class="col-md-4"><input name="Number" type="number" class="form-control" placeholder="No." required /></div>
+                        <div class="col-md-6"><input name="City" class="form-control" placeholder="City" required /></div>
+                        <div class="col-md-6"><input name="County" class="form-control" placeholder="County/State" required /></div>
+                        <div class="col-md-12"><input name="PostalCode" class="form-control" placeholder="Postal Code" required /></div>
+                    </div>
+
+                    <hr />
+
+                    <div class="mb-4">
+                        <label class="form-label fw-bold">Shipping Method</label>
+                        <select name="shippingMethodName" class="form-select" required>
+                            <option value="" disabled selected>Choose shipping method...</option>
+                            <option value="Standard">Standard (15 RON) - 2-3 days</option>
+                            <option value="Express">Express (25 RON) - 24h</option>
+                            <option value="Ridicare">Store Pickup (Free)</option>
+                        </select>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">Payment Method</label>
+                        <select name="paymentMethod" class="form-select" required>
+                            <option value="" disabled selected>Select payment method...</option>
+                            <option value="Card">Online Card</option>
+                            <option value="Cash">Cash on Delivery</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="card p-3 bg-light shadow-sm">
+                    <h5>Order Summary</h5>
+                    <hr />
+                    <div class="d-flex justify-content-between mb-2">
+                        <span>Products Subtotal:</span>
+                        <strong id="subtotal-val" data-price="@Model.ShoppingCartItem.Sum(i => i.Quantity * i.Product.PriceProduct)">
+                            @Model.ShoppingCartItem.Sum(i => i.Quantity * i.Product.PriceProduct).ToString("N2") RON
+                        </strong>
+                    </div>
+
+                    <div class="d-flex justify-content-between mb-2">
+                        <span>Shipping Cost:</span>
+                        <strong id="shipping-display">0.00 RON</strong>
+                    </div>
+
+                    <hr />
+
+                    <div class="d-flex justify-content-between mb-3">
+                        <span class="fw-bold">Total to Pay:</span>
+                        <strong id="total-display" class="text-success fs-5">
+                            @Model.ShoppingCartItem.Sum(i => i.Quantity * i.Product.PriceProduct).ToString("N2") RON
+                        </strong>
+                    </div>
+
+                    <button type="submit" class="btn btn-success w-100 py-2 fw-bold">PLACE ORDER</button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const shippingSelect = document.querySelector('select[name="shippingMethodName"]');
+            const subtotal = parseFloat(document.getElementById('subtotal-val').getAttribute('data-price').replace(',', '.'));
+            const shippingDisplay = document.getElementById('shipping-display');
+            const totalDisplay = document.getElementById('total-display');
+
+            shippingSelect.addEventListener('change', function () {
+                let shippingCost = 0;
+                const method = this.value;
+
+                if (method === "Standard") {
+                    shippingCost = 15.00;
+                } else if (method === "Express") {
+                    shippingCost = 25.00;
+                } else if (method === "Ridicare") {
+                    shippingCost = 0.00;
+                }
+
+                if (subtotal >= 200 && method !== "Ridicare") {
+                    shippingCost = 0.00;
+                    shippingDisplay.innerHTML = '<span class="text-decoration-line-through text-muted">RON</span> Free';
+                } else {
+                    shippingDisplay.innerText = shippingCost.toFixed(2) + " RON";
+                }
+
+                const total = subtotal + shippingCost;
+                totalDisplay.innerText = total.toLocaleString('en-US', { minimumFractionDigits: 2 }) + " RON";
+            });
+        });
+    </script>
+}

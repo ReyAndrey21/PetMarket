@@ -1,0 +1,84 @@
+﻿@model PetMarket.Models.ShoppingCart
+
+@{
+    ViewData["Title"] = "Shopping Cart";
+    Layout = "~/Views/Shared/_CustomerLayout.cshtml";
+}
+
+<div class="container my-5">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="fw-bold"><i class="bi bi-cart3 me-2 text-success"></i>Your Cart</h2>
+        <a asp-controller="CustomerDashboard" asp-action="Products" class="btn btn-outline-secondary">
+            <i class="bi bi-arrow-left me-1"></i>Back to Products
+        </a>
+    </div>
+
+    @if (Model.ShoppingCartItem == null || !Model.ShoppingCartItem.Any())
+    {
+        <div class="alert alert-light text-center border py-5 shadow-sm">
+            <i class="bi bi-cart-x fs-1 text-muted"></i>
+            <p class="mt-3 fs-5">Your cart is empty. Add some products to see them here!</p>
+        </div>
+    }
+    else
+    {
+        <div class="row">
+            <div class="col-lg-8">
+                @foreach (var item in Model.ShoppingCartItem)
+                {
+                    <div class="card mb-3 shadow-sm border-0">
+                        <div class="row g-0">
+                            <div class="col-md-3 d-flex align-items-center justify-content-center p-3">
+                                @if (!string.IsNullOrEmpty(item.Product.ImageProductUrl))
+                                {
+                                    <img src="@item.Product.ImageProductUrl" class="img-fluid rounded" alt="@item.Product.NameProduct" style="max-height: 120px; object-fit: contain;">
+                                }
+                                else
+                                {
+                                    <i class="bi bi-image fs-1 text-light"></i>
+                                }
+                            </div>
+                            <div class="col-md-9">
+                                <div class="card-body">
+                                    <div class="d-flex justify-content-between">
+                                        <h5 class="card-title fw-bold text-success">@item.Product.NameProduct</h5>
+                                        <form asp-action="RemoveFromCart" method="post">
+                                            <input type="hidden" name="productId" value="@item.IdProduct" />
+                                            <button type="submit" class="btn btn-outline-danger btn-sm border-0"><i class="bi bi-trash"></i></button>
+                                        </form>
+                                    </div>
+                                    <div class="d-flex justify-content-between align-items-end mt-3">
+                                        <p class="card-text mb-0">
+                                            <span class="text-muted small">Unit Price: @item.Product.PriceProduct.ToString("C")</span><br />
+                                            <span class="fw-bold">Quantity: @item.Quantity</span>
+                                        </p>
+                                        <p class="card-text fw-bold fs-5 mb-0">
+                                            @((item.Quantity * item.Product.PriceProduct).ToString("C"))
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+            <div class="col-lg-4">
+                <div class="card shadow-sm border-0 p-3 bg-light">
+                    <h5 class="fw-bold mb-3">Cart Summary</h5>
+                    <div class="d-flex justify-content-between mb-2">
+                        <span>Total Items:</span>
+                        <span>@Model.ShoppingCartItem.Sum(i => i.Quantity)</span>
+                    </div>
+                    <hr />
+                    <div class="d-flex justify-content-between mb-4">
+                        <span class="h5 fw-bold">Total to Pay:</span>
+                        <span class="h5 fw-bold text-success">@Model.ShoppingCartItem.Sum(i => i.Quantity * i.Product.PriceProduct).ToString("C")</span>
+                    </div>
+                    <a asp-controller="Checkout" asp-action="Index" class="btn btn-success w-100 py-2 fw-bold">
+                        Checkout <i class="bi bi-chevron-right ms-1"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    }
+</div>

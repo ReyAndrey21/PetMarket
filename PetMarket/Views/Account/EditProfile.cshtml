@@ -1,0 +1,70 @@
+﻿@model PetMarket.Models.User
+@{
+    ViewData["Title"] = "Editare profil";
+    Layout = "~/Views/Shared/_CustomerLayout.cshtml";
+}
+
+<div class="container my-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6 col-lg-5">
+            <div class="card shadow-sm border-0">
+                <div class="card-header bg-primary text-white text-center py-3">
+                    <h4>Edit your profile</h4>
+                </div>
+
+                <div class="card-body p-4">
+                    <form asp-controller="Account" asp-action="EditProfile" method="post" enctype="multipart/form-data">
+                        <div class="text-center mb-3">
+                            @if (!string.IsNullOrEmpty(Model.ProfilePictureUrl))
+                            {
+                                <img src="@Model.ProfilePictureUrl" alt="Profile Picture" class="rounded-circle mb-2" width="120" height="120" />
+                            }
+                            else
+                            {
+                                <div class="rounded-circle bg-secondary text-white d-inline-flex align-items-center justify-content-center"
+                                     style="width: 120px; height: 120px; font-size: 2rem;">
+                                    @(Model.FirstName?.Substring(0, 1))@(Model.LastName?.Substring(0, 1))
+                                </div>
+                            }
+                            <div class="mt-2">
+                                <input type="file" name="ProfilePicture" class="form-control" />
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">FirstName</label>
+                            <input asp-for="FirstName" class="form-control" />
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">LastName</label>
+                            <input asp-for="LastName" class="form-control" />
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">PhoneNumber</label>
+                            <input asp-for="PhoneNumber" class="form-control" />
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">UserName</label>
+                            <input asp-for="UserName" class="form-control" />
+                        </div>
+
+                        <div class="d-flex justify-content-center gap-2 mt-4">
+                            <button type="submit" class="btn btn-outline-success">
+                                <i class="bi bi-save me-2"></i>Save changes
+                            </button>
+
+                            <a asp-controller="Account" asp-action="Profile" class="btn btn-outline-primary">
+                                <i class="bi bi-arrow-left me-2"></i>Back to profile
+                            </a>
+                        </div>
+
+                        
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -13,10 +13,6 @@ namespace PetMarket.Models
         [ForeignKey("ParentCategory")]
         public int? ParentCategoryId { get; set; }
         public Category? ParentCategory { get; set; }
-
-        [ForeignKey("Pet")]
-        public int? IdPet { get; set; }
-        public Pet? Pet { get; set; }
         public ICollection<Product>? Product { get; set; }
         public ICollection<Category> Subcategories { get; set; } = new List<Category>();
     }

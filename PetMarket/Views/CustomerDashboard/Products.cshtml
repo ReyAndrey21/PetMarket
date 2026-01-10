@@ -1,0 +1,184 @@
+﻿@model IEnumerable<PetMarket.Models.Product>
+
+@{
+    ViewData["Title"] = "Our Shop";
+    Layout = "~/Views/Shared/_CustomerLayout.cshtml";
+}
+
+<div class="container my-5">
+    <div class="text-center mb-5 pb-3">
+        <h2 class="display-4 fw-bold text-dark mb-2">
+            <span class="text-success text-gradient">Pet</span>Market Shop
+        </h2>
+        <p class="text-muted fs-5">Premium products for your beloved companions</p>
+        <div class="mx-auto bg-success rounded-pill" style="height: 4px; width: 60px;"></div>
+    </div>
+
+    @if (Model != null && Model.Any())
+    {
+        <div class="row g-4 justify-content-center">
+            @foreach (var product in Model)
+            {
+                <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6">
+                    <div class="card h-100 border-0 shadow-lg custom-product-card overflow-hidden">
+
+                        <div class="position-absolute top-0 start-0 m-3 z-index-2">
+                            @if (product.StockProduct > 0)
+                            {
+                                <span class="badge bg-success shadow-sm rounded-pill px-3">In Stock</span>
+                            }
+                            else
+                            {
+                                <span class="badge bg-danger shadow-sm rounded-pill px-3">Out of Stock</span>
+                            }
+                        </div>
+
+                        <div class="product-img-container bg-white d-flex align-items-center justify-content-center p-3">
+                            @if (!string.IsNullOrEmpty(product.ImageProductUrl))
+                            {
+                                <img src="@product.ImageProductUrl"
+                                     alt="@product.NameProduct"
+                                     class="img-fluid product-image transition-transform">
+                            }
+                            else
+                            {
+                                <div class="text-center text-muted">
+                                    <i class="bi bi-image fs-1 opacity-25"></i>
+                                </div>
+                            }
+
+                            <div class="product-overlay">
+                                <a asp-controller="CustomerDashboard" asp-action="ViewDetailsProduct" asp-route-id="@product.IdProduct"
+                                   class="btn btn-light btn-floating shadow-sm" title="Quick View">
+                                    <i class="bi bi-search text-success"></i>
+                                </a>
+                            </div>
+                        </div>
+
+                        <div class="card-body p-4 text-center">
+                            <h5 class="card-title fw-bold text-dark mb-1 text-truncate">@product.NameProduct</h5>
+                            <p class="text-muted small mb-3">Premium Quality</p>
+
+                            <div class="d-flex justify-content-center align-items-center mb-3">
+                                <span class="h4 fw-bold text-success m-0">@product.PriceProduct.ToString("C")</span>
+                            </div>
+
+                            <div class="d-grid gap-2">
+                                <a asp-controller="CustomerDashboard" asp-action="ViewDetailsProduct" asp-route-id="@product.IdProduct"
+                                   class="btn btn-success fw-bold py-2 rounded-pill shadow-sm hover-lift">
+                                    <i class="bi bi-cart-plus me-2"></i>Add to Cart
+                                </a>
+                                <button onclick="toggleFavorite(@product.IdProduct, this)"
+                                        class="btn btn-outline-danger border-0 rounded-circle position-absolute top-0 end-0 m-2 bg-white shadow-sm btn-fav">
+                                    <i class="bi bi-heart"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+    else
+    {
+        <div class="text-center py-5 rounded-4 bg-light shadow-inner">
+            <i class="bi bi-emoji-frown display-1 text-muted opacity-50"></i>
+            <h3 class="mt-3 text-dark fw-bold">No products found</h3>
+            <p class="text-muted fs-5">We are restocking soon. Check back later!</p>
+        </div>
+    }
+</div>
+
+@section Scripts {
+    <style>
+        
+        .custom-product-card {
+            border-radius: 20px;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+            .custom-product-card:hover {
+                transform: translateY(-12px);
+                box-shadow: 0 15px 35px rgba(0,0,0,0.12) !important;
+            }
+
+       
+        .product-img-container {
+            height: 220px;
+            position: relative;
+            overflow: hidden;
+            border-bottom: 1px solid #f8f9fa;
+        }
+
+        .product-image {
+            max-height: 180px;
+            width: auto;
+            object-fit: contain;
+            transition: transform 0.5s ease;
+        }
+
+        .custom-product-card:hover .product-image {
+            transform: scale(1.1);
+        }
+
+       
+        .text-gradient {
+            background: linear-gradient(45deg, #198754, #20c997);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        
+        .product-overlay {
+            position: absolute;
+            bottom: -50px;
+            left: 0;
+            right: 0;
+            background: rgba(255,255,255,0.8);
+            backdrop-filter: blur(5px);
+            transition: all 0.3s ease;
+            padding: 10px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .custom-product-card:hover .product-overlay {
+            bottom: 0;
+        }
+
+        .btn-floating {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+       
+        .btn-fav {
+            width: 35px;
+            height: 35px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s ease;
+        }
+
+            .btn-fav:hover {
+                background-color: #dc3545 !important;
+                color: white !important;
+                transform: scale(1.1);
+            }
+
+       
+        .hover-lift {
+            transition: all 0.2s ease;
+        }
+
+            .hover-lift:hover {
+                transform: translateY(-2px);
+                filter: brightness(1.1);
+            }
+    </style>
+}

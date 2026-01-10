@@ -1,0 +1,63 @@
+﻿@* PetMarket/Views/Pet/AddPet.cshtml *@
+
+@model PetMarket.Models.Pet
+@{
+    ViewData["Title"] = "Add Pet";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-md-8 col-lg-6">
+            <div class="card shadow-sm border-0">
+                <div class="card-header bg-primary text-white py-3">
+                    <h4 class="mb-0">
+                        <i class="bi bi-plus-circle-fill me-2"></i>Add New Pet
+                    </h4>
+                </div>
+                <div class="card-body p-4">
+                  
+                    <form asp-action="AddPet" asp-controller="Pet" method="post" enctype="multipart/form-data">
+
+                        <div class="mb-3">
+                            <label asp-for="TypePet" class="form-label fw-bold">
+                                <i class="bi bi-tag-fill me-2 text-primary"></i>Pet Type
+                            </label>
+                            <input asp-for="TypePet" class="form-control" required />
+                            <span asp-validation-for="TypePet" class="text-danger"></span>
+                            <div class="form-text">
+                                <i class="bi bi-info-circle me-1"></i>Enter the type of pet (e.g., Dog, Cat, Bird, etc.)
+                            </div>
+                        </div>
+
+                        
+                        <div class="mb-3">
+                            <label asp-for="ImagePet" class="form-label fw-bold">
+                                <i class="bi bi-image-fill me-2 text-primary"></i>Pet Image
+                            </label>
+                            <input asp-for="ImagePet" type="file" class="form-control" />
+                            <span asp-validation-for="ImagePet" class="text-danger"></span>
+                            <div class="form-text">
+                                <i class="bi bi-info-circle me-1"></i>Upload an image for the pet.
+                            </div>
+                        </div>
+
+
+                        <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-4">
+                            <a href="/admin/pets" class="btn btn-outline-secondary">
+                                <i class="bi bi-x-circle me-2"></i>Cancel
+                            </a>
+                            <button type="submit" class="btn btn-success">
+                                <i class="bi bi-check-circle me-2"></i>Save Pet
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
