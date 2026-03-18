@@ -3,6 +3,7 @@
 @{
     ViewData["Title"] = "Our Shop";
     Layout = "~/Views/Shared/_CustomerLayout.cshtml";
+    var searchTerm = ViewData["SearchTerm"] as string;
 }
 
 <div class="container my-5">
@@ -11,7 +12,28 @@
             <span class="text-success text-gradient">Pet</span>Market Shop
         </h2>
         <p class="text-muted fs-5">Premium products for your beloved companions</p>
-        <div class="mx-auto bg-success rounded-pill" style="height: 4px; width: 60px;"></div>
+
+        <div class="row justify-content-center mt-4">
+            <div class="col-md-6 col-lg-5">
+                <form asp-controller="CustomerDashboard" asp-action="Products" method="get" class="input-group shadow-sm rounded-pill overflow-hidden border">
+                    <input type="text" name="searchTerm" class="form-control border-0 px-4 py-2"
+                           placeholder="Caută produse"
+                           value="@searchTerm">
+                    <button class="btn btn-success px-4" type="submit">
+                        <i class="bi bi-search"></i>
+                    </button>
+                </form>
+                @if (!string.IsNullOrEmpty(searchTerm))
+                {
+                    <div class="mt-2">
+                        <a asp-action="Products" class="text-decoration-none small text-muted">
+                            <i class="bi bi-x-circle"></i> Resetează căutarea
+                        </a>
+                    </div>
+                }
+            </div>
+        </div>
+        <div class="mx-auto bg-success rounded-pill mt-4" style="height: 4px; width: 60px;"></div>
     </div>
 
     @if (Model != null && Model.Any())
@@ -56,8 +78,8 @@
                         </div>
 
                         <div class="card-body p-4 text-center">
-                            <h5 class="card-title fw-bold text-dark mb-1 text-truncate">@product.NameProduct</h5>
-                            <p class="text-muted small mb-3">Premium Quality</p>
+                            <h5 class="card-title fw-bold text-dark mb-1 text-truncate" title="@product.NameProduct">@product.NameProduct</h5>
+                            <p class="text-muted small mb-3">@product.BrandProduct</p>
 
                             <div class="d-flex justify-content-center align-items-center mb-3">
                                 <span class="h4 fw-bold text-success m-0">@product.PriceProduct.ToString("C")</span>
@@ -81,17 +103,17 @@
     }
     else
     {
-        <div class="text-center py-5 rounded-4 bg-light shadow-inner">
-            <i class="bi bi-emoji-frown display-1 text-muted opacity-50"></i>
-            <h3 class="mt-3 text-dark fw-bold">No products found</h3>
-            <p class="text-muted fs-5">We are restocking soon. Check back later!</p>
+        <div class="text-center py-5 rounded-4 bg-light shadow-inner mt-4">
+            <i class="bi bi-search display-1 text-muted opacity-50"></i>
+            <h3 class="mt-3 text-dark fw-bold">Nu am găsit rezultate</h3>
+            <p class="text-muted fs-5">Nu există produse care să corespundă căutării: "<strong>@searchTerm</strong>"</p>
+            <a asp-action="Products" class="btn btn-success rounded-pill mt-3 px-4">Vezi toate produsele</a>
         </div>
     }
 </div>
 
 @section Scripts {
     <style>
-        
         .custom-product-card {
             border-radius: 20px;
             transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
@@ -102,7 +124,6 @@
                 box-shadow: 0 15px 35px rgba(0,0,0,0.12) !important;
             }
 
-       
         .product-img-container {
             height: 220px;
             position: relative;
@@ -121,14 +142,12 @@
             transform: scale(1.1);
         }
 
-       
         .text-gradient {
             background: linear-gradient(45deg, #198754, #20c997);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
 
-        
         .product-overlay {
             position: absolute;
             bottom: -50px;
@@ -155,7 +174,6 @@
             justify-content: center;
         }
 
-       
         .btn-fav {
             width: 35px;
             height: 35px;
@@ -171,7 +189,6 @@
                 transform: scale(1.1);
             }
 
-       
         .hover-lift {
             transition: all 0.2s ease;
         }
@@ -180,5 +197,9 @@
                 transform: translateY(-2px);
                 filter: brightness(1.1);
             }
+
+        .shadow-inner {
+            box-shadow: inset 0 2px 4px 0 rgba(0, 0, 0, 0.06);
+        }
     </style>
 }

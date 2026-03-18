@@ -10,8 +10,8 @@ namespace PetMarket.Controllers
     [Route("admin/products")]
     public class ProductController : Controller
     {
-        
         private readonly IProductService _productService;
+
         public ProductController(IProductService productService)
         {
             _productService = productService;
@@ -21,12 +21,10 @@ namespace PetMarket.Controllers
         public async Task<IActionResult> ListProduct(string? searchTerm)
         {
             ViewData["Title"] = "Manage Products";
-
             ViewData["CurrentFilter"] = searchTerm;
             var products = await _productService.GetAllProductsAsync(searchTerm);
             return View(products);
         }
-
 
         [HttpGet("create")]
         public async Task<IActionResult> AddProduct()
@@ -46,7 +44,7 @@ namespace PetMarket.Controllers
             }
 
             
-            if (await _productService.CreateProductAsync(product, product.ImageProduct))
+            if (await _productService.CreateProductAsync(product, product.ImageProduct, product.DescriptionPdf))
             {
                 return RedirectToAction(nameof(ListProduct));
             }
@@ -56,7 +54,6 @@ namespace PetMarket.Controllers
             return View(product);
         }
 
-        
         [HttpGet("edit/{id}")]
         public async Task<IActionResult> EditProduct(int id)
         {
@@ -75,8 +72,8 @@ namespace PetMarket.Controllers
 
             if (ModelState.IsValid)
             {
-                
-                if (await _productService.UpdateProductAsync(updatedProduct, updatedProduct.ImageProduct))
+              
+                if (await _productService.UpdateProductAsync(updatedProduct, updatedProduct.ImageProduct, updatedProduct.DescriptionPdf))
                 {
                     return RedirectToAction(nameof(ListProduct));
                 }
@@ -87,7 +84,6 @@ namespace PetMarket.Controllers
             return View(updatedProduct);
         }
 
-        
         [HttpGet("delete/{id}")]
         public async Task<IActionResult> DeleteProduct(int id)
         {
@@ -101,7 +97,6 @@ namespace PetMarket.Controllers
         [HttpPost("delete/{id}")]
         public async Task<IActionResult> DeleteConfirmedProduct(int id)
         {
-            
             if (await _productService.DeleteProductAsync(id))
             {
                 return RedirectToAction(nameof(ListProduct));

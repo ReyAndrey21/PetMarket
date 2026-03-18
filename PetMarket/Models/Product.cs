@@ -24,6 +24,9 @@ namespace PetMarket.Models
         public string? ImageProductUrl { get; set; }
         [NotMapped]
         public IFormFile? ImageProduct { get; set; }
+        public string? DescriptionPdfUrl { get; set; } 
+        [NotMapped]
+        public IFormFile? DescriptionPdf { get; set; } 
         [ForeignKey("Category")]
         public int IdCategory { get; set; }
         public Category? Category { get; set; }

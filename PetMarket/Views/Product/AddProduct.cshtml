@@ -81,6 +81,17 @@
                             </div>
                         </div>
 
+                        <div class="mb-3">
+                            <label asp-for="DescriptionPdf" class="form-label fw-bold">
+                                <i class="bi bi-file-earmark-pdf-fill me-2 text-danger"></i>Product PDF Document
+                            </label>
+                            <input asp-for="DescriptionPdf" type="file" class="form-control" accept="application/pdf" />
+                            <span asp-validation-for="DescriptionPdf" class="text-danger"></span>
+                            <div class="form-text">
+                                <i class="bi bi-info-circle me-1"></i>Upload a descriptive PDF for this product (optional)
+                            </div>
+                        </div>
+
                         <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-4">
                             <a href="/admin/products" class="btn btn-outline-secondary">
                                 <i class="bi bi-x-circle me-2"></i>Cancel

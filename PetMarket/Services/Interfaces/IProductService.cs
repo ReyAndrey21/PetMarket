@@ -7,8 +7,8 @@ namespace PetMarket.Services.Interfaces
     {
         Task<IEnumerable<Product>> GetAllProductsAsync(string? searchTerm = null);
         Task<Product?> GetProductDetailsAsync(int productId);
-        Task<bool> CreateProductAsync(Product product, IFormFile? imageFile);
-        Task<bool> UpdateProductAsync(Product updatedProduct, IFormFile? newImageFile);
+        Task<bool> CreateProductAsync(Product product, IFormFile? imageFile, IFormFile? pdfFile);
+        Task<bool> UpdateProductAsync(Product updatedProduct, IFormFile? newImageFile, IFormFile? newPdfFile);
         Task<bool> DeleteProductAsync(int productId);
         Task<IEnumerable<Category>> GetAvailableCategoriesAsync();
 
